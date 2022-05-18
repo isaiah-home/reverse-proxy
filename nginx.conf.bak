@@ -33,6 +33,22 @@ http {
 
     server {
         listen 80;
-        server_name ivcode.org;
+        server_name snipeit.vanderelst.house;
+    }
+    server {
+        listen 80;
+        server_name nextcloud.vanderelst.house;
+    }
+    server {
+        listen 80;
+        server_name wiki.vanderelst.house;
+    }
+    server {
+        listen 80;
+        server_name auth.vanderelst.house;
+    }
+    server {
+        listen 80;
+        server_name vanderelst.house;
     }
 }
