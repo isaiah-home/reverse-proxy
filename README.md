@@ -1,6 +1,11 @@
 # reverse-proxy
 Reverse Proxy
 
+## Prerequisites
+ * init
+ * terraform-aws
+ * terraform-local
+
 ## Setup
 The reverse proxy is setup in the following steps:
  1) Build the docker image (includes nginx and certbot) ([script](scripts/nginx_build.sh))
