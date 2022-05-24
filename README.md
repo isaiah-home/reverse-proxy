@@ -9,4 +9,6 @@ The reverse proxy is setup in the following steps:
  5) Register domains using certbot
  6) Update to the fully configured [nginx.conf](nginx.conf) ([script](scripts/config-update.sh))
 
-Note: when copying config files, use param-filter to populate placeholders.
+Notes:
+ * When copying config files, use param-filter to populate placeholders (The Init repo contains an install script).
+ * When running scripts, it's assumed the working directory is the project's root.
