@@ -6,4 +6,4 @@
 # The fully configured conf works for subsequent renewals
 #
 
-param-filter.sh -i ../nginx.conf.bak -o $ORGANIZE_ME_HOME/nginx/nginx.conf
+cat nginx.conf.bak | param-filter.sh > $ORGANIZE_ME_HOME/nginx/nginx.conf
