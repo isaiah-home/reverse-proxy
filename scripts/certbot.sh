@@ -1,8 +1,13 @@
 #!/bin/bash
 
-#examples
-# ./certbot.sh renew --dry-run
-# ./certbot.sh --nginx --expand --non-interactive --agree-tos -m isaiah.v@comcast.net -d vanderelst.house -d auth.vanderelst.house -d wiki.vanderelst.house -d nextcloud.vanderelst.house -d snipeit.vanderelst.house -d vaultwarden.vanderelst.house
+docker stop organize-me-nginx;
 
-ARG="certbot $@"
-docker exec -it organize-me-nginx $ARG
+docker run -it --rm --name certbot \
+ -p 80:80 \
+ -p 443:443 \
+ -v "$ORGANIZE_ME_HOME/letsencrypt/etc/letsencrypt:/etc/letsencrypt" \
+ -v "$ORGANIZE_ME_HOME/letsencrypt/var/lib/letsencrypt:/var/lib/letsencrypt" \
+ certbot/certbot \
+ "$@";
+
+docker start organize-me-nginx;
