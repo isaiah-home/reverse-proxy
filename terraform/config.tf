@@ -50,7 +50,8 @@ resource "local_file" "nginx_conf" {
         #    server_name $subdomain.vanderelst.house;
         #}
     
-        resolver local=on;
+        #resolver local=on;
+        resolver 127.0.0.11;
     
         server {
             server_name snipeit.${var.domain};
@@ -70,7 +71,8 @@ resource "local_file" "nginx_conf" {
                 proxy_set_header        X-Real-IP $remote_addr;
                 proxy_set_header        X-Forwarded-Proto $scheme;
     
-                proxy_pass              http://snipeit:80;
+                set $proxy_uri          http://snipeit:80;
+                proxy_pass              $proxy_uri;
             }
         }
     
@@ -97,7 +99,8 @@ resource "local_file" "nginx_conf" {
                 proxy_set_header        X-Forwarded-For $proxy_add_x_forwarded_for;
                 proxy_set_header        X-Forwarded-Proto $scheme;
     
-                proxy_pass              http://nextcloud:80;
+                set $proxy_uri          http://nextcloud:80;
+                proxy_pass              $proxy_uri;
             }
     
         }
@@ -131,7 +134,8 @@ resource "local_file" "nginx_conf" {
                 proxy_set_header        X-Forwarded-For $proxy_add_x_forwarded_for;
                 proxy_set_header        X-Forwarded-Proto $scheme;
     
-                proxy_pass              http://keycloak:8080;
+                set $proxy_uri          http://keycloak:8080;
+                proxy_pass              $proxy_uri;
             }
             
         }
@@ -158,10 +162,9 @@ resource "local_file" "nginx_conf" {
                 proxy_set_header        X-Forwarded-For $proxy_add_x_forwarded_for;
                 proxy_set_header        X-Forwarded-Proto $scheme;
     
-                proxy_pass              http://wikijs:3000;
-            }
-        
-        
+                set $proxy_uri          http://wikijs:3000;
+                proxy_pass              $proxy_uri;
+            }        
         }
      
         server {
@@ -190,10 +193,9 @@ resource "local_file" "nginx_conf" {
                 proxy_set_header        X-Forwarded-For $proxy_add_x_forwarded_for;
                 proxy_set_header        X-Forwarded-Proto $scheme;
     
-                proxy_pass              http://vaultwarden:80;
+                set $proxy_uri          http://vaultwarden:80;
+                proxy_pass              $proxy_uri;
             }
-    
-    
         }
         
         server {
@@ -229,7 +231,8 @@ resource "local_file" "nginx_conf" {
                 proxy_set_header        X-Forwarded-For $proxy_add_x_forwarded_for;
                 proxy_set_header        X-Forwarded-Proto $scheme;
     
-                proxy_pass              http://pihole:80;
+                set $proxy_uri          http://pihole:80;
+                proxy_pass              $proxy_uri;
             }
     
             location = / {
@@ -271,12 +274,14 @@ resource "local_file" "nginx_conf" {
                 access_by_lua_file /usr/local/openresty/nginx/conf/lua/authenticate.lua;
     
     
-                proxy_pass              http://192.168.1.11:8123;
                 proxy_set_header        Host $host;
                 proxy_http_version      1.1;
                 proxy_set_header        X-Forwarded-For $proxy_add_x_forwarded_for;
                 proxy_set_header        Upgrade $http_upgrade;
                 proxy_set_header        Connection "upgrade";
+
+                set $proxy_uri          http://192.168.1.11:8123;
+                proxy_pass              $proxy_uri;
     
     #            proxy_hide_header       Cache-Control;
     #            add_header              Cache-Control "no-cache";
@@ -309,7 +314,8 @@ resource "local_file" "nginx_conf" {
                 proxy_set_header        X-Forwarded-For $proxy_add_x_forwarded_for;
                 proxy_set_header        X-Forwarded-Proto $scheme;
     
-                proxy_pass              http://home-portal:8080;
+                set $proxy_uri          http://home-portal:8080;
+                proxy_pass              $proxy_uri;
             }
         }
     
