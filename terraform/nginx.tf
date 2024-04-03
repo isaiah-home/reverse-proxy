@@ -12,7 +12,7 @@ resource "docker_container" "nginx" {
 #  wait_timeout = 300 # 5 minutes
   
   env=[
-    "CONFIG_MD5=${local_file.nginx_conf.content_md5}"
+    "CONFIG_MD5=${local_file.home_nginx_conf.content_md5}"
   ]
   networks_advanced {
     name    = data.docker_network.organize_me.name
@@ -27,8 +27,8 @@ resource "docker_container" "nginx" {
     internal = 443
   }
   volumes {
-    host_path      = "${var.install_root}/nginx/nginx.conf"
-    container_path = "/usr/local/openresty/nginx/conf/nginx.conf"
+    host_path      = "${var.install_root}/nginx/etc/nginx/conf.d"
+    container_path = "/etc/nginx/conf.d"
     read_only      = true
   }
   volumes {
@@ -48,6 +48,6 @@ resource "docker_container" "nginx" {
   }
   
   depends_on = [
-    local_file.nginx_conf
+    local_file.home_nginx_conf
   ]
 }

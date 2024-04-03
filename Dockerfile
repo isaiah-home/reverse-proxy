@@ -6,3 +6,4 @@ RUN /usr/local/openresty/luajit/bin/luarocks install lua-resty-jwt
 RUN /usr/local/openresty/luajit/bin/luarocks install lua-resty-openidc
 
 COPY ./lua /usr/local/openresty/nginx/conf/lua
+COPY ./nginx.conf /usr/local/openresty/nginx/conf/nginx.conf

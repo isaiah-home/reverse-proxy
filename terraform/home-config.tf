@@ -1,58 +1,6 @@
-resource "local_file" "nginx_conf" {
-  filename = "${var.install_root}/nginx/nginx.conf"
+resource "local_file" "home_nginx_conf" {
+  filename = "${var.install_root}/nginx/etc/nginx/conf.d/home.conf"
   content = <<-EOT
-    #test
-    #user  nginx;
-    #worker_processes  auto;
-    
-    #error_log  /var/log/nginx/error.log notice;
-    #pid        /var/run/nginx.pid;
-    
-    
-    events {
-        worker_connections  1024;
-    }
-    
-    
-    http {
-        include       mime.types;
-        default_type  application/octet-stream;
-    
-        #log_format  main  '$remote_addr - $remote_user [$time_local] "$request" '
-        #                  '$status $body_bytes_sent "$http_referer" '
-        #                  '"$http_user_agent" "$http_x_forwarded_for"';
-    
-        #access_log  /var/log/nginx/access.log  main;
-    
-        # See Move default writable paths to a dedicated directory (#119)
-        # https://github.com/openresty/docker-openresty/issues/119
-        client_body_temp_path /var/run/openresty/nginx-client-body;
-        proxy_temp_path       /var/run/openresty/nginx-proxy;
-        fastcgi_temp_path     /var/run/openresty/nginx-fastcgi;
-        uwsgi_temp_path       /var/run/openresty/nginx-uwsgi;
-        scgi_temp_path        /var/run/openresty/nginx-scgi;
-    
-        sendfile        on;
-        #tcp_nopush     on;
-    
-        keepalive_timeout  65;
-    
-        #gzip  on;
-
-        include /etc/nginx/conf.d/*.conf;
-    
-        # When adding a subdomain, add the following server block before running certbot
-        # When running certbot, user the --expand flag to add to the domain list
-        # The reverse proxy can be setup after the subdomain is registered
-        #
-        #server {
-        #    listen 80;
-        #    server_name $subdomain.vanderelst.house;
-        #}
-    
-        #resolver local=on;
-        resolver 127.0.0.11;
-    
         server {
             server_name snipeit.${var.domain};
     
@@ -390,7 +338,6 @@ resource "local_file" "nginx_conf" {
             server_name pihole.${var.domain};
             return 404;
         }
-    }
     EOT
 }
 
