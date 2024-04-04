@@ -10,4 +10,3 @@
  -d pihole.$DOMAIN \
  -d homeassistant.$DOMAIN
 
-

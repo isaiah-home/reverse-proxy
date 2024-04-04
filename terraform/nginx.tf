@@ -12,7 +12,8 @@ resource "docker_container" "nginx" {
 #  wait_timeout = 300 # 5 minutes
   
   env=[
-    "CONFIG_MD5=${local_file.home_nginx_conf.content_md5}"
+    "HOME_CONFIG_MD5=${local_file.home_nginx_conf.content_md5}",
+    "BUILD_CONFIG_MD5=${local_file.build_nginx_conf.content_md5}"
   ]
   networks_advanced {
     name    = data.docker_network.organize_me.name
@@ -48,6 +49,7 @@ resource "docker_container" "nginx" {
   }
   
   depends_on = [
-    local_file.home_nginx_conf
+    local_file.home_nginx_conf,
+    local_file.build_nginx_conf
   ]
 }
