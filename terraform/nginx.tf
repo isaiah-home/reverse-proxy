@@ -33,6 +33,11 @@ resource "docker_container" "nginx" {
     read_only      = true
   }
   volumes {
+    host_path      = "${var.install_root}/nginx/etc/nginx/htpasswd"
+    container_path = "/etc/nginx/htpasswd"
+    read_only      = true
+  }
+  volumes {
     host_path      = "${var.install_root}/letsencrypt/etc/letsencrypt"
     container_path = "/etc/letsencrypt"
     read_only      = true

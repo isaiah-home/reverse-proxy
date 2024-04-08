@@ -1,3 +1,9 @@
+# deliberately left blank
+resource "local_file" "htpasswd_registry" {
+  filename = "${var.install_root}/nginx/etc/nginx/htpasswd/registry"
+  content  = ""
+}
+
 resource "local_file" "build_nginx_conf" {
   filename = "${var.install_root}/nginx/etc/nginx/conf.d/build.conf"
   content = <<-EOT
@@ -47,6 +53,8 @@ resource "local_file" "build_nginx_conf" {
   server {
       server_name mvn.${var.domain_build};
       
+      client_max_body_size 500M;
+      
       listen 443 ssl;
       ssl_certificate     /etc/letsencrypt/live/${var.domain_build}/fullchain.pem;
       ssl_certificate_key /etc/letsencrypt/live/${var.domain_build}/privkey.pem;
@@ -85,6 +93,11 @@ resource "local_file" "build_nginx_conf" {
 
       location / {
       
+          limit_except GET {
+              auth_basic            'Restricted';
+              auth_basic_user_file  /etc/nginx/htpasswd/registry;
+          }
+      
           proxy_set_header        Host $host;
           proxy_set_header        X-Real-IP $remote_addr;
           proxy_set_header        Referer $http_referer;
@@ -104,5 +117,9 @@ resource "local_file" "build_nginx_conf" {
   }
   
   EOT
+  
+  depends_on = [
+    local_file.htpasswd_registry
+  ]
 }
 
