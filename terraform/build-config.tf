@@ -1,7 +1,12 @@
-# deliberately left blank
-resource "local_file" "htpasswd_registry" {
-  filename = "${var.install_root}/nginx/etc/nginx/htpasswd/registry"
-  content  = ""
+# Makes sure the password file exists for the registry
+resource "null_resource" "create_htpasswd_registry" {
+  provisioner "local-exec" {
+    command = "touch ${var.install_root}/nginx/etc/nginx/htpasswd/registry"
+  }
+  
+  depends_on = [
+    null_resource.create_htpasswd
+  ]
 }
 
 resource "local_file" "build_nginx_conf" {
@@ -90,12 +95,16 @@ resource "local_file" "build_nginx_conf" {
       add_header Strict-Transport-Security "max-age=31536000; includeSubDomains" always;
       #add_header X-Content-Type-Options nosniff;    # cannot apply now because of open keycloak issue https://issues.redhat.com/browse/KEYCLOAK-17076
       add_header X-XSS-Protection: "1; mode=block";
+      
+      # There is an error (https://trac.nginx.org/nginx/ticket/1383) that dosen't allow veriables to be used
+      # with the "limit_except" directive. Pulling the variable out of the location block seems to be the workaround
+      set $proxy_uri          http://registry:5000;
 
       location / {
       
           limit_except GET {
-              auth_basic            'Restricted';
-              auth_basic_user_file  /etc/nginx/htpasswd/registry;
+               auth_basic            "Login required";
+               auth_basic_user_file  /etc/nginx/htpasswd/registry;
           }
       
           proxy_set_header        Host $host;
@@ -104,7 +113,6 @@ resource "local_file" "build_nginx_conf" {
           proxy_set_header        X-Forwarded-For $proxy_add_x_forwarded_for;
           proxy_set_header        X-Forwarded-Proto $scheme;
       
-          set $proxy_uri          http://registry:5000;
           proxy_pass              $proxy_uri;
       }
   }
@@ -117,9 +125,5 @@ resource "local_file" "build_nginx_conf" {
   }
   
   EOT
-  
-  depends_on = [
-    local_file.htpasswd_registry
-  ]
 }
 

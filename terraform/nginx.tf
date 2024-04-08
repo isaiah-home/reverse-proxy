@@ -1,3 +1,10 @@
+# Passwords are not managed by terraform, but to mount the volume the directory must already exist
+resource "null_resource" "create_htpasswd" {
+  provisioner "local-exec" {
+    command = "mkdir -p ${var.install_root}/nginx/etc/nginx/htpasswd"
+  }
+}
+
 resource "docker_image" "nginx" {
   name         = "organize-me/nginx"
   keep_locally = true
@@ -54,6 +61,8 @@ resource "docker_container" "nginx" {
   }
   
   depends_on = [
+    null_resource.create_htpasswd,
+    null_resource.create_htpasswd_registry,
     local_file.home_nginx_conf,
     local_file.build_nginx_conf
   ]
