@@ -4,5 +4,6 @@
  -d $DOMAIN_BUILD \
  -d jenkins.$DOMAIN_BUILD \
  -d mvn.$DOMAIN_BUILD \
- -d registry.$DOMAIN_BUILD
+ -d registry.$DOMAIN_BUILD \
+ -d registry-publish.$DOMAIN_BUILD
 
