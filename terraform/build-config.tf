@@ -82,6 +82,34 @@ resource "local_file" "build_nginx_conf" {
           proxy_pass              $proxy_uri;
       }
   }
+
+  server {
+      server_name sonar.${var.domain_build};
+
+      client_max_body_size 500M;
+
+      listen 443 ssl;
+      ssl_certificate     /etc/letsencrypt/live/${var.domain_build}/fullchain.pem;
+      ssl_certificate_key /etc/letsencrypt/live/${var.domain_build}/privkey.pem;
+      ssl_protocols       TLSv1 TLSv1.1 TLSv1.2 TLSv1.3;
+      ssl_ciphers         HIGH:!aNULL:!MD5;
+
+      add_header Strict-Transport-Security "max-age=31536000; includeSubDomains" always;
+      #add_header X-Content-Type-Options nosniff;    # cannot apply now because of open keycloak issue https://issues.redhat.com/browse/KEYCLOAK-17076
+      add_header X-XSS-Protection: "1; mode=block";
+
+      location / {
+
+          proxy_set_header        Host $host;
+          proxy_set_header        X-Real-IP $remote_addr;
+          proxy_set_header        Referer $http_referer;
+          proxy_set_header        X-Forwarded-For $proxy_add_x_forwarded_for;
+          proxy_set_header        X-Forwarded-Proto $scheme;
+
+          set $proxy_uri          http://sonar:9000;
+          proxy_pass              $proxy_uri;
+      }
+  }
   
   # Public read-only entry for the docker registry
   server {
