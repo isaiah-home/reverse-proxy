@@ -7,7 +7,10 @@ resource "null_resource" "create_htpasswd" {
 
 resource "docker_image" "nginx" {
   name         = "organize-me/nginx"
-  keep_locally = true
+  build {
+    context = "../"
+    dockerfile = "../Dockerfile"
+  }
 }
 
 resource "docker_container" "nginx" {

@@ -12,13 +12,6 @@ resource "null_resource" "create_htpasswd_registry" {
 resource "local_file" "build_nginx_conf" {
   filename = "${var.install_root}/nginx/etc/nginx/conf.d/build.conf"
   content = <<-EOT
-  
-  log_format custom '!! $remote_addr - $remote_user [$time_local] "$request" '
-                    '$status $body_bytes_sent "$http_referer" '
-                    '"$http_user_agent" "$host"';
-
-  access_log /usr/local/openresty/nginx/logs/access.log custom;
-
   server {
       server_name ${var.domain_build};
 
