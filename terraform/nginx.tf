@@ -15,6 +15,7 @@ resource "docker_container" "nginx" {
   name          = "organize-me-nginx"
   hostname      = "nginx"
   restart       = "unless-stopped"
+  network_mode  = "bridge"
 #  wait         = true
 #  wait_timeout = 300 # 5 minutes
   

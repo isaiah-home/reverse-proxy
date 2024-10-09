@@ -13,6 +13,12 @@ resource "local_file" "build_nginx_conf" {
   filename = "${var.install_root}/nginx/etc/nginx/conf.d/build.conf"
   content = <<-EOT
   
+  log_format custom '!! $remote_addr - $remote_user [$time_local] "$request" '
+                    '$status $body_bytes_sent "$http_referer" '
+                    '"$http_user_agent" "$host"';
+
+  access_log /usr/local/openresty/nginx/logs/access.log custom;
+
   server {
       server_name ${var.domain_build};
 
@@ -106,7 +112,7 @@ resource "local_file" "build_nginx_conf" {
           proxy_set_header        X-Forwarded-For $proxy_add_x_forwarded_for;
           proxy_set_header        X-Forwarded-Proto $scheme;
 
-          set $proxy_uri          http://sonar:9000;
+          set $proxy_uri          http://sonarqube:9000;
           proxy_pass              $proxy_uri;
       }
   }
