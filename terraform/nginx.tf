@@ -24,7 +24,8 @@ resource "docker_container" "nginx" {
   
   env=[
     "HOME_CONFIG_MD5=${local_file.home_nginx_conf.content_md5}",
-    "BUILD_CONFIG_MD5=${local_file.build_nginx_conf.content_md5}"
+    "BUILD_CONFIG_MD5=${local_file.build_nginx_conf.content_md5}",
+    "LOG_CONFIG_MD5=${local_file.log_nginx_conf.content_md5}"
   ]
   networks_advanced {
     name    = data.docker_network.organize_me.name
