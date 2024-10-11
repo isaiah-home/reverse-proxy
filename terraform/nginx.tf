@@ -39,6 +39,11 @@ resource "docker_container" "nginx" {
     external = 443
     internal = 443
   }
+  ports {
+    external = 7890
+    internal = 7890
+  }
+
   volumes {
     host_path      = "${var.install_root}/nginx/etc/nginx/conf.d"
     container_path = "/etc/nginx/conf.d"

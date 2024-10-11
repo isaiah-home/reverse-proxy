@@ -12,16 +12,30 @@ variable "domain_build" {
 
 variable "pihole_client_id" {
   type = string
+  sensitive = true
 }
 
 variable "pihole_secret_id" {
   type = string
+  sensitive = true
 }
 
 variable "homeassistant_client_id" {
   type = string
+  sensitive = true
 }
 
 variable "homeassistant_secret_id" {
   type = string
+  sensitive = true
+}
+
+variable "goaccess_client_id" {
+  type = string
+  sensitive = true
+}
+
+variable "goaccess_secret_id" {
+  type = string
+  sensitive = true
 }
