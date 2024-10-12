@@ -1,4 +1,4 @@
-resource "local_file" "build_nginx_conf" {
+resource "local_file" "base_nginx_conf" {
   filename = "${var.install_root}/nginx/etc/nginx/conf.d/_base.conf"
   content  = <<-EOT
     # GoAccess
