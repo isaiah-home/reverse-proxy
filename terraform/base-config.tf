@@ -36,7 +36,6 @@ resource "local_file" "base_nginx_conf" {
     server {
         server_name goaccess.${var.domain};
 
-#        listen 7890;
         listen 7890 ssl;
         ssl_certificate     /etc/letsencrypt/live/${var.domain}/fullchain.pem;
         ssl_certificate_key /etc/letsencrypt/live/${var.domain}/privkey.pem;
