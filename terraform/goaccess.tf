@@ -13,7 +13,6 @@ resource "docker_container" "goaccess" {
     "-f", "/usr/local/goaccess/logs/access.log",
     "--log-format=COMBINED",
     "--real-time-html",
-    "--ws-url=wss://goaccess.${var.domain}:7890",
     "-o", "/usr/local/goaccess/html/index.html",
     "--persist",
     "--restore"

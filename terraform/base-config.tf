@@ -4,7 +4,6 @@ resource "local_file" "base_nginx_conf" {
     # GoAccess
     server {
         server_name goaccess.${var.domain};
-        listen 80;
 
         listen 443 ssl;
         ssl_certificate     /etc/letsencrypt/live/${var.domain}/fullchain.pem;
@@ -21,7 +20,7 @@ resource "local_file" "base_nginx_conf" {
             default_type 'text/html';
 
             set $ssl_verify       no;
-            set $redirect_uri     https://pihole.${var.domain}/login;
+            set $redirect_uri     https://goaccess.${var.domain}/login;
             set $discovery        https://auth.${var.domain}/auth/realms/home/.well-known/openid-configuration;
             set $client_id        ${var.goaccess_client_id};
             set $client_secret    ${var.goaccess_secret_id};
@@ -35,8 +34,14 @@ resource "local_file" "base_nginx_conf" {
     }
 
     server {
-        listen 7890;
         server_name goaccess.${var.domain};
+
+#        listen 7890;
+        listen 7890 ssl;
+        ssl_certificate     /etc/letsencrypt/live/${var.domain}/fullchain.pem;
+        ssl_certificate_key /etc/letsencrypt/live/${var.domain}/privkey.pem;
+        ssl_protocols       TLSv1 TLSv1.1 TLSv1.2 TLSv1.3;
+        ssl_ciphers         HIGH:!aNULL:!MD5;
 
         # Proxy WebSocket connections to GoAccess
         location / {
