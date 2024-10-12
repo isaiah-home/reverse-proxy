@@ -8,5 +8,5 @@
  -d snipeit.$DOMAIN \
  -d vaultwarden.$DOMAIN \
  -d pihole.$DOMAIN \
- -d homeassistant.$DOMAIN
-
+ -d homeassistant.$DOMAIN \
+ -d goaccess.$DOMAIN

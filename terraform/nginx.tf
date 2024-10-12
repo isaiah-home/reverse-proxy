@@ -8,12 +8,19 @@ resource "null_resource" "create_htpasswd" {
 resource "docker_image" "nginx" {
   name         = "organize-me/nginx"
   build {
-    context = "../"
+    context    = "../"
     dockerfile = "../Dockerfile"
   }
+
   triggers = {
-    nginx_conf = filemd5("../nginx.conf")
+    dockerfile   = filemd5(abspath("${path.module}/../Dockerfile"))
+    nginx_conf   = filemd5(abspath("${path.module}/../nginx.conf"))
+    authenticate = filemd5(abspath("${path.module}/../lua/authenticate.lua"))
   }
+}
+
+resource "docker_volume" "nginx_goaccess" {
+  name = "nginx_goaccess"
 }
 
 resource "docker_container" "nginx" {
@@ -24,12 +31,13 @@ resource "docker_container" "nginx" {
   network_mode  = "bridge"
 #  wait         = true
 #  wait_timeout = 300 # 5 minutes
-  
+
   env=[
-    "HOME_CONFIG_MD5=${local_file.home_nginx_conf.content_md5}",
-    "BUILD_CONFIG_MD5=${local_file.build_nginx_conf.content_md5}",
-    "LOG_CONFIG_MD5=${local_file.base_nginx_conf.content_md5}"
+#    "HOME_CONFIG_MD5=${local_file.home_nginx_conf.content_md5}",
+#    "BUILD_CONFIG_MD5=${local_file.build_nginx_conf.content_md5}",
+    "BASE_CONFIG_MD5=${local_file.base_nginx_conf.content_md5}"
   ]
+
   networks_advanced {
     name    = data.docker_network.organize_me.name
     aliases = ["nginx"]
@@ -47,6 +55,10 @@ resource "docker_container" "nginx" {
     internal = 7890
   }
 
+  volumes {
+    volume_name    = docker_volume.nginx_goaccess.name
+    container_path = "/usr/local/goaccess"
+  }
   volumes {
     host_path      = "${var.install_root}/nginx/etc/nginx/conf.d"
     container_path = "/etc/nginx/conf.d"
@@ -75,8 +87,8 @@ resource "docker_container" "nginx" {
   
   depends_on = [
     null_resource.create_htpasswd,
-    null_resource.create_htpasswd_registry,
-    local_file.home_nginx_conf,
-    local_file.build_nginx_conf
+#    null_resource.create_htpasswd_registry,
+#    local_file.home_nginx_conf,
+#    local_file.build_nginx_conf
   ]
 }

@@ -7,4 +7,3 @@
  -d "sonar.$DOMAIN_BUILD" \
  -d "registry.$DOMAIN_BUILD" \
  -d "registry-publish.$DOMAIN_BUILD"
-

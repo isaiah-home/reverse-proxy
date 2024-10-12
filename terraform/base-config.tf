@@ -1,9 +1,10 @@
 resource "local_file" "base_nginx_conf" {
-  filename = "${var.install_root}/nginx/etc/nginx/conf.d/_base.conf"
+  filename = "${var.install_root}/nginx/etc/nginx/conf.d/base.conf"
   content  = <<-EOT
     # GoAccess
     server {
-        server_name goaccess.${var.domain};;
+        server_name goaccess.${var.domain};
+        listen 80;
 
         listen 443 ssl;
         ssl_certificate     /etc/letsencrypt/live/${var.domain}/fullchain.pem;
@@ -27,9 +28,24 @@ resource "local_file" "base_nginx_conf" {
 
             access_by_lua_file /usr/local/openresty/nginx/conf/lua/authenticate.lua;
 
-            root /usr/local/openresty/nginx/html;  # Path to your web directory
+            root /usr/local/goaccess/html;         # Path to your web directory
             index index.html index.htm;            # Default index files
             try_files $uri $uri/ =404;             # Serve files or return 404 if not found
+        }
+    }
+
+    server {
+        listen 7890;
+        server_name goaccess.${var.domain};
+
+        # Proxy WebSocket connections to GoAccess
+        location / {
+            proxy_pass http://goaccess:7890;  # Ensure this matches the GoAccess container name
+            proxy_http_version 1.1;
+            proxy_set_header Upgrade $http_upgrade;
+            proxy_set_header Connection "Upgrade";
+            proxy_set_header Host $host;
+            proxy_cache_bypass $http_upgrade;
         }
     }
   EOT
