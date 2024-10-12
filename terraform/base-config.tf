@@ -44,6 +44,16 @@ resource "local_file" "base_nginx_conf" {
 
         # Proxy WebSocket connections to GoAccess
         location / {
+            set $ssl_verify       no;
+            set $redirect_uri     https://goaccess.${var.domain}/login;
+            set $discovery        https://auth.${var.domain}/auth/realms/home/.well-known/openid-configuration;
+            set $client_id        ${var.goaccess_client_id};
+            set $client_secret    ${var.goaccess_secret_id};
+
+            access_by_lua_file /usr/local/openresty/nginx/conf/lua/authenticate.lua;
+
+
+
             proxy_pass http://goaccess:7890;  # Ensure this matches the GoAccess container name
             proxy_http_version 1.1;
             proxy_set_header Upgrade $http_upgrade;
