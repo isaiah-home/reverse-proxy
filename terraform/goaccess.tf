@@ -3,6 +3,11 @@ resource "docker_image" "goaccess" {
   build {
     context    = "./goaccess/"
   }
+  triggers = {
+    dockerfile = filemd5("./goaccess/Dockerfile")
+    dockerfile = filemd5("./goaccess/download-geo.sh")
+    dockerfile = filemd5("./goaccess/entrypoint.sh")
+  }
 }
 
 resource "docker_container" "goaccess" {
