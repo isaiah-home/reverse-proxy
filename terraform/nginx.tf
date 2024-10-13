@@ -30,7 +30,6 @@ resource "null_resource" "run_script" {
         mkdir -p /usr/local/goaccess/html && \
         mkdir -p /usr/local/goaccess/db
         "
-      EOF
     EOT
   }
 
