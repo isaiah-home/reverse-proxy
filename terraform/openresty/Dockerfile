@@ -7,7 +7,8 @@ VOLUME /usr/local/goaccess
 RUN mkdir -p /usr/local/goaccess/logs && \
     touch /usr/local/goaccess/logs/access.log && \
     mkdir -p /usr/local/goaccess/html && \
-    mkdir -p /usr/local/goaccess/db
+    mkdir -p /usr/local/goaccess/db && \
+    touch /usr/local/goaccess/db/goaccess.db
 
 # Static Nginx Configuration
 COPY nginx.conf /usr/local/openresty/nginx/conf/nginx.conf
