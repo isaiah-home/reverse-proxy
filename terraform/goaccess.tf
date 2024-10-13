@@ -12,15 +12,6 @@ resource "docker_container" "goaccess" {
   restart      = "unless-stopped"
   network_mode = "bridge"
 
-  command = [
-    "-f", "/usr/local/goaccess/logs/access.log",
-    "--log-format=COMBINED",
-    "--real-time-html",
-    "-o", "/usr/local/goaccess/html/index.html",
-    "--persist",
-    "--restore"
-  ]
-
   volumes {
     volume_name = docker_volume.nginx_goaccess.name
     container_path = "/usr/local/goaccess"
