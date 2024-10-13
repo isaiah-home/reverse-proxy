@@ -6,7 +6,8 @@ VOLUME /usr/local/goaccess
 # Initalize Volume
 RUN mkdir -p /usr/local/goaccess/logs && \
     touch /usr/local/goaccess/logs/access.log && \
-    mkdir -p /usr/local/goaccess/html
+    mkdir -p /usr/local/goaccess/html && \
+    mkdir -p /usr/local/goaccess/db
 
 # Static Nginx Configuration
 COPY nginx.conf /usr/local/openresty/nginx/conf/nginx.conf
