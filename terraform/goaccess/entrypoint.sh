@@ -14,7 +14,7 @@ if [ -n "$MAXMIND_LICENSE_KEY" ]; then
     --output=/usr/local/goaccess/html/index.html \
     --geoip-database=$GEO_IP_DB_PATH/GeoLite2-City.mmdb \
     --persist \
-    --db-path=/usr/local/goaccess/db/goaccess.db \
+    --db-path=/usr/local/goaccess/db/ \
     --restore"
 else
   ARGS="\
@@ -23,7 +23,7 @@ else
       --real-time-html \
       --output=/usr/local/goaccess/html/index.html \
       --persist \
-      --db-path=/usr/local/goaccess/db/goaccess.db \
+      --db-path=/usr/local/goaccess/db/ \
       --restore"
 fi
 
