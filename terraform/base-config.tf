@@ -53,12 +53,13 @@ resource "local_file" "base_nginx_conf" {
 
             access_by_lua_file /usr/local/openresty/nginx/conf/lua/authenticate.lua;
 
-            proxy_pass http://goaccess:7890;
-            proxy_http_version 1.1;
-            proxy_set_header Upgrade $http_upgrade;
-            proxy_set_header Connection "Upgrade";
-            proxy_set_header Host $host;
-            proxy_cache_bypass $http_upgrade;
+            set $proxy_uri          http://goaccess:7890;
+            proxy_pass              $proxy_uri;
+            proxy_http_version      1.1;
+            proxy_set_header        Upgrade $http_upgrade;
+            proxy_set_header        Connection "Upgrade";
+            proxy_set_header        Host $host;
+            proxy_cache_bypass      $http_upgrade;
         }
     }
   EOT
