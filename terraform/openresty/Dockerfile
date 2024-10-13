@@ -1,8 +1,5 @@
 FROM openresty/openresty:1.21.4.1-0-jammy
 
-# Setup Volume
-VOLUME /usr/local/goaccess
-
 # Initalize Volume
 RUN mkdir -p /usr/local/goaccess/logs && \
     touch /usr/local/goaccess/logs/access.log && \

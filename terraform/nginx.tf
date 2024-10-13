@@ -22,6 +22,21 @@ resource "docker_volume" "nginx_goaccess" {
   name = "nginx_goaccess"
 }
 
+resource "null_resource" "run_script" {
+  provisioner "local-exec" {
+    command = <<EOT
+      docker run --rm -v ${docker_volume.nginx_goaccess.name}:/usr/local/goaccess/db busybox sh -c "
+        mkdir -p /usr/local/goaccess/logs && \
+        mkdir -p /usr/local/goaccess/html && \
+        mkdir -p /usr/local/goaccess/db
+        "
+      EOF
+    EOT
+  }
+
+  depends_on = [docker_volume.nginx_goaccess]
+}
+
 resource "docker_container" "nginx" {
   image         = docker_image.nginx.image_id
   name          = "organize-me-nginx"
