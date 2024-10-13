@@ -1,5 +1,8 @@
 resource "docker_image" "goaccess" {
-  name = "allinurl/goaccess:1.9.3"
+  name = "organize-me/goaccess"
+  build {
+    context    = "./goaccess/"
+  }
 }
 
 resource "docker_container" "goaccess" {

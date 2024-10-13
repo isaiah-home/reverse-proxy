@@ -8,8 +8,7 @@ resource "null_resource" "create_htpasswd" {
 resource "docker_image" "nginx" {
   name         = "organize-me/nginx"
   build {
-    context    = "openresty/"
-    dockerfile = "openresty/Dockerfile"
+    context    = "./openresty/"
   }
 
   triggers = {
