@@ -51,3 +51,8 @@ variable "goaccess_secret_id" {
   type = string
   sensitive = true
 }
+variable "maxmind_license_key" {
+  type = string
+  sensitive = true
+  default = ""
+}

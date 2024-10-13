@@ -8,14 +8,14 @@ resource "null_resource" "create_htpasswd" {
 resource "docker_image" "nginx" {
   name         = "organize-me/nginx"
   build {
-    context    = "../"
-    dockerfile = "../Dockerfile"
+    context    = "openresty/"
+    dockerfile = "openresty/Dockerfile"
   }
 
   triggers = {
-    dockerfile   = filemd5(abspath("${path.module}/../Dockerfile"))
-    nginx_conf   = filemd5(abspath("${path.module}/../nginx.conf"))
-    authenticate = filemd5(abspath("${path.module}/../lua/authenticate.lua"))
+    dockerfile   = filemd5("openresty/Dockerfile")
+    nginx_conf   = filemd5("openresty/nginx.conf")
+    authenticate = filemd5("openresty/lua/authenticate.lua")
   }
 }
 

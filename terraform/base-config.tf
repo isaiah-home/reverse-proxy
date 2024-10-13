@@ -33,6 +33,7 @@ resource "local_file" "base_nginx_conf" {
         }
     }
 
+    # GoAccess WebSocket
     server {
         server_name goaccess.${var.domain};
 
@@ -52,9 +53,7 @@ resource "local_file" "base_nginx_conf" {
 
             access_by_lua_file /usr/local/openresty/nginx/conf/lua/authenticate.lua;
 
-
-
-            proxy_pass http://goaccess:7890;  # Ensure this matches the GoAccess container name
+            proxy_pass http://goaccess:7890;
             proxy_http_version 1.1;
             proxy_set_header Upgrade $http_upgrade;
             proxy_set_header Connection "Upgrade";

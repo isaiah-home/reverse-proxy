@@ -1,3 +1,5 @@
+#!/bin/bash
+
 ./certbot.sh \
  certonly \
  --expand --non-interactive --agree-tos -m isaiah.v@comcast.net --standalone \
