@@ -10,8 +10,8 @@ resource "docker_image" "goaccess" {
 
   triggers = {
     dockerfile = filemd5("./goaccess/Dockerfile")
-    dockerfile = filemd5("./goaccess/download-geo.sh")
-    dockerfile = filemd5("./goaccess/entrypoint.sh")
+    geo_script = filemd5("./goaccess/download-geo.sh")
+    entrypoint = filemd5("./goaccess/entrypoint.sh")
   }
 }
 
