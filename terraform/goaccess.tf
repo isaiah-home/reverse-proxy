@@ -5,9 +5,9 @@ resource "docker_image" "goaccess" {
     context = "./goaccess/"
 
     # Pass the build_arg unconditionally, but only set the value if the variable is not empty
-    build_arg = {
+    build_args = var.maxmind_license_key != "" ? {
       MAXMIND_LICENSE_KEY = var.maxmind_license_key
-    }
+    } : {}
   }
 
   triggers = {
