@@ -6,6 +6,7 @@ if [ -f "$GEO_IP_DB_PATH/GeoLite2-City.mmdb" ]; then
   # If GeoLite2-City database exists, use it
 
   ARGS="\
+      --agent-list \
       --log-file=/usr/local/goaccess/logs/access.log \
       --log-format=COMBINED \
       --real-time-html \
@@ -18,6 +19,7 @@ else
   # If GeoLite2-City database doesn't exist, don't use it
 
   ARGS="\
+      --agent-list \
       --log-file=/usr/local/goaccess/logs/access.log \
       --log-format=COMBINED \
       --real-time-html \
