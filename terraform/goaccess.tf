@@ -1,11 +1,13 @@
 resource "docker_image" "goaccess" {
   name = "organize-me/goaccess"
-  build {
-    context    = "./goaccess/"
 
-    build_arg  = var.maxmind_license_key != "" ? {
+  build {
+    context = "./goaccess/"
+
+    # Pass the build_arg unconditionally, but only set the value if the variable is not empty
+    build_arg = {
       MAXMIND_LICENSE_KEY = var.maxmind_license_key
-    } : {}
+    }
   }
 
   triggers = {
@@ -14,6 +16,7 @@ resource "docker_image" "goaccess" {
     entrypoint = filemd5("./goaccess/entrypoint.sh")
   }
 }
+
 
 resource "docker_container" "goaccess" {
   image        = docker_image.goaccess.image_id
