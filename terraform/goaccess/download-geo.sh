@@ -1,5 +1,7 @@
 #!/bin/sh
 
+GEO_IP_DB_PATH=/usr/local/share/GeoIP
+
 # Download GeoLite2-City database, if MAXMIND_LICENSE_KEY is set
 if [ -n "$MAXMIND_LICENSE_KEY" ]; then
 

@@ -2,7 +2,12 @@ resource "docker_image" "goaccess" {
   name = "organize-me/goaccess"
   build {
     context    = "./goaccess/"
+
+    build_arg  = var.maxmind_license_key != "" ? {
+      MAXMIND_LICENSE_KEY = var.maxmind_license_key
+    } : {}
   }
+
   triggers = {
     dockerfile = filemd5("./goaccess/Dockerfile")
     dockerfile = filemd5("./goaccess/download-geo.sh")

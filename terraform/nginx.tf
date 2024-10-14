@@ -18,10 +18,12 @@ resource "docker_image" "nginx" {
   }
 }
 
+# Create the shared volume for GoAccess
 resource "docker_volume" "nginx_goaccess" {
   name = "nginx_goaccess"
 }
 
+# Create the expected directories for GoAccess & Nginx
 resource "null_resource" "run_script" {
   provisioner "local-exec" {
     command = <<EOT
