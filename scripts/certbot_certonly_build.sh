@@ -1,3 +1,5 @@
+#!/bin/bash
+
 ./certbot.sh \
  certonly \
  --expand --non-interactive --agree-tos -m isaiah.v@comcast.net --standalone \
@@ -7,4 +9,3 @@
  -d "sonar.$DOMAIN_BUILD" \
  -d "registry.$DOMAIN_BUILD" \
  -d "registry-publish.$DOMAIN_BUILD"
-
